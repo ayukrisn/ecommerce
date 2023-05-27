@@ -8,7 +8,7 @@ public class Users {
     private String last_name;
     private String email;
     private String phone_number;
-    public enum Type {CUSTOMER, ADMIN}
+    public enum Type {BUYER, SELLER}
     private Type type;
 
     // Constructor
