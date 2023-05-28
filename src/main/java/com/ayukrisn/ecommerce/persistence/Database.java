@@ -2,10 +2,9 @@ package com.ayukrisn.ecommerce.persistence;
 
 // Package class dan interfaces untuk mengakses dan memproses data
 // pada database
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 public class Database {
-    public static void main (String args[]) throws SQLException {
+    public static void connectDatabase() throws SQLException {
         // variabel koneksi
         Connection connection = null;
 
@@ -41,7 +40,7 @@ public class Database {
                 "type TEXT CHECK(type IN('buyer', 'seller')) NOT NULL);"
                 );
 
-        System.out.println("Tabel User berhasil dibuat.");
+        // System.out.println("Tabel User berhasil dibuat.");
     }
 
     private static void createTableAddress (Connection connection) throws  SQLException {
@@ -57,7 +56,7 @@ public class Database {
                 "FOREIGN KEY(user) REFERENCES user(id));"
                 );
 
-        System.out.println("Tabel Address berhasil dibuat");
+        // System.out.println("Tabel Address berhasil dibuat");
     }
 
     private static void createTableProduct (Connection connection) throws  SQLException {
@@ -71,7 +70,7 @@ public class Database {
                 "stock INTEGER NOT NULL);"
                 );
 
-        System.out.println("Tabel Product berhasil dibuat");
+        // System.out.println("Tabel Product berhasil dibuat");
     }
 
     private static void createTableOrder (Connection connection) throws  SQLException {
@@ -85,7 +84,7 @@ public class Database {
                 "is_paid TINYINT(1) NOT NULL, " +
                 "FOREIGN KEY(buyer) REFERENCES user(id));"
                 );
-        System.out.println("Tabel Order berhasil dibuat");
+        // System.out.println("Tabel Order berhasil dibuat");
     }
 
     private static void createTableOrderDetail (Connection connection) throws SQLException {
@@ -99,7 +98,7 @@ public class Database {
         "FOREIGN KEY(product) REFERENCES product(id));"
         );
 
-        System.out.println("Tabel order_detail berhasil dibuat");
+        // System.out.println("Tabel order_detail berhasil dibuat");
     }
 
     private static void createTableReview(Connection connection) throws SQLException {
@@ -110,6 +109,6 @@ public class Database {
                 "description TEXT NOT NULL);"
                 );
 
-        System.out.println("Tabel review berhasil dibuat.");
+        // System.out.println("Tabel review berhasil dibuat.");
     }
 }
