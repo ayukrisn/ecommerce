@@ -1,12 +1,12 @@
 package com.ayukrisn.ecommerce.model;
 
-public class Addresses {
+public class Address {
     public enum Type {
         OFFICE, HOME
     }
 
     // Variables
-    private int users; //Foreign key: Users
+    private int user; //Foreign key: User
     private Type type;
     private String line1;
     private String line2;
@@ -15,9 +15,9 @@ public class Addresses {
     private String postcode;
 
     // Constructor
-    public Addresses (int users, Type type, String line1, String line2, String city, String province, String postcode) {
+    public Address(int users, Type type, String line1, String line2, String city, String province, String postcode) {
         this.type = type;
-        this.users = users;
+        this.user = users;
         this.line1 = line1;
         this.line2 = line2;
         this.city = city;
@@ -26,11 +26,11 @@ public class Addresses {
     }
 
     // Getter and Setter
-    public int getUsers() {
-        return users;
+    public int getUser() {
+        return user;
     }
-    public void setUsers(int users) {
-        this.users = users;
+    public void setUser(int user) {
+        this.user = user;
     }
 
     public Type getType() {

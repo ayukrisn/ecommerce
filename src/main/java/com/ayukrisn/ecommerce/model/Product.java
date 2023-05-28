@@ -1,18 +1,18 @@
 package com.ayukrisn.ecommerce.model;
 
-public class Products {
+public class Product {
     //Variable
     private int id;
     private int seller;
     private String title;
     private String description;
-    private String price;
+    private int price;
     private int stock;
 
     // Constructor
-    public Products (int id, int seller, String title, String description, String price, int stock) {
+    public Product(int id, int seller, String title, String description, int price, int stock) {
         this.id = id;
-        this.seller = seller; //Foreign key: Users
+        this.seller = seller; //Foreign key: User
         this.title = title;
         this.description = description;
         this.price = price;
@@ -48,10 +48,10 @@ public class Products {
         this.description = description;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

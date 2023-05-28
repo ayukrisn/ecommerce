@@ -1,6 +1,6 @@
 package com.ayukrisn.ecommerce.model;
 
-public class Users {
+public class User {
 
     // Variables
     private int id;
@@ -12,7 +12,7 @@ public class Users {
     private Type type;
 
     // Constructor
-    public Users (int id, String first_name, String last_name, String email, String phone_number, Type type){
+    public User(int id, String first_name, String last_name, String email, String phone_number, Type type){
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;

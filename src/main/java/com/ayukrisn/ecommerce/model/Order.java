@@ -1,16 +1,16 @@
 package com.ayukrisn.ecommerce.model;
 
-public class Orders {
+public class Order {
     // Variables
     private int id;
-    private int buyer; //Foreign key: Users
-    private int note;
+    private int buyer; //Foreign key: User
+    private String note;
     private int total;
     private int discount;
     private boolean is_paid;
 
     // Constructor
-    public Orders (int id, int buyer, int note, int total, int discount, boolean is_paid) {
+    public Order(int id, int buyer, String note, int total, int discount, boolean is_paid) {
         this.id = id;
         this.note = note;
         this.total = total;
@@ -33,10 +33,10 @@ public class Orders {
         this.buyer = buyer;
     }
 
-    public int getNote() {
+    public String getNote() {
         return note;
     }
-    public void setNote(int note) {
+    public void setNote(String note) {
         this.note = note;
     }
 
