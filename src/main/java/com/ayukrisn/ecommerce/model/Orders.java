@@ -10,6 +10,7 @@ public class Orders {
     private boolean is_paid;
 
     // Constructor
+    public Orders() {}
     public Orders(int id, int buyer, String note, int total, int discount, boolean is_paid) {
         this.id = id;
         this.note = note;

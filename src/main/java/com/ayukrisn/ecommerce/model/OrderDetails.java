@@ -8,6 +8,7 @@ public class OrderDetails {
     private int price;
 
     // Constructor
+    public OrderDetails() {}
     public OrderDetails(int order, int product, int quantity, int price) {
         this.order = order;
         this.product = product;

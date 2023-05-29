@@ -7,6 +7,7 @@ public class Reviews {
     private String description;
 
     // Constructor
+    public Reviews() {}
     public Reviews(int order, int star, String description) {
         this.order = order;
         this.star = star;
