@@ -11,6 +11,7 @@ public class ServerHandler implements HttpHandler {
     ResponseHandler responseHandler = new ResponseHandler();
     UserRequestHandler userReqHandler = new UserRequestHandler();
     ProductRequestHandler productReqHandler = new ProductRequestHandler();
+    OrderRequestHandler orderReqHandler = new OrderRequestHandler();
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String[] path = exchange.getRequestURI().getPath().split("/");
@@ -38,6 +39,19 @@ public class ServerHandler implements HttpHandler {
                      jsonProduct = productReqHandler.getProduct(path);
                      if (jsonProduct != null)
                          responseHandler.getResponse(exchange, jsonProduct.toString(), path, "products", 200);
+                     else {
+                         responseHandler.sendResponse(exchange, 404, "ID Not Found");
+                     }
+                 } catch (SQLException e) {
+                     throw new RuntimeException(e);
+                 }
+             } else if ("orders".equals(path[1])) {
+                 JSONObject jsonOrders = null;
+                 try {
+                     jsonOrders = orderReqHandler.getOrder(path);
+                     if (jsonOrders != null) {
+                         responseHandler.getResponse(exchange, jsonOrders.toString(), path, "orders", 200);
+                     }
                      else {
                          responseHandler.sendResponse(exchange, 404, "ID Not Found");
                      }

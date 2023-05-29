@@ -7,11 +7,11 @@ public class Orders {
     private String note;
     private int total;
     private int discount;
-    private boolean is_paid;
+    private int is_paid;
 
     // Constructor
     public Orders() {}
-    public Orders(int id, int buyer, String note, int total, int discount, boolean is_paid) {
+    public Orders(int id, int buyer, String note, int total, int discount, int is_paid) {
         this.id = id;
         this.note = note;
         this.total = total;
@@ -55,10 +55,10 @@ public class Orders {
         this.discount = discount;
     }
 
-    public boolean isIs_paid() {
+    public int getIs_paid() {
         return is_paid;
     }
-    public void setIs_paid(boolean is_paid) {
+    public void setIs_paid(int is_paid) {
         this.is_paid = is_paid;
     }
 }

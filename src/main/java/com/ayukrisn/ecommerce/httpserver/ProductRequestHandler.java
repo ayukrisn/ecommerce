@@ -31,7 +31,7 @@ public class ProductRequestHandler {
                 jsonUserRecord.put("stock", product.getStock());
                 jsonUserArray.put(jsonUserRecord);
             }
-            jsonProduct.put("Product Data", jsonUserArray);
+            jsonProduct.put("Product Record", jsonUserArray);
         }
         else if (path.length == 3){
             jsonProduct = new JSONObject();

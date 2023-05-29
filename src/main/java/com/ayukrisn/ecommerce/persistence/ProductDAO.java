@@ -43,7 +43,7 @@ public class ProductDAO {
         return product;
     }
 
-    // SELECT ALL PRODUCTS FROM DATABASE
+    // SELECT MULTIPLE PRODUCTS FROM DATABASE
     public ArrayList<Products> selectAll() throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
