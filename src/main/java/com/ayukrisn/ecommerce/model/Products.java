@@ -1,6 +1,6 @@
 package com.ayukrisn.ecommerce.model;
 
-public class Product {
+public class Products {
     //Variable
     private int id;
     private int seller;
@@ -10,9 +10,9 @@ public class Product {
     private int stock;
 
     // Constructor
-    public Product(int id, int seller, String title, String description, int price, int stock) {
+    public Products(int id, int seller, String title, String description, int price, int stock) {
         this.id = id;
-        this.seller = seller; //Foreign key: User
+        this.seller = seller; //Foreign key: Users
         this.title = title;
         this.description = description;
         this.price = price;

@@ -15,11 +15,19 @@
         <artifactId>sqlite-jdbc</artifactId>
         <version>3.42.0.0</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
     <dependency>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>servlet-api</artifactId>
-        <version>2.5-20081211</version>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20230227</version>
     </dependency>
+
+
+    <!--    <dependency>-->
+<!--        <groupId>org.mortbay.jetty</groupId>-->
+<!--        <artifactId>servlet-api</artifactId>-->
+<!--        <version>2.5-20081211</version>-->
+<!--    </dependency>-->
 </dependencies>
 
 

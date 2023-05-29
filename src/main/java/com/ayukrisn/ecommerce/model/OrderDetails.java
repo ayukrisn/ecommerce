@@ -1,6 +1,6 @@
 package com.ayukrisn.ecommerce.model;
 
-public class OrderDetail {
+public class OrderDetails {
     // Variables
     private int order; //Foreign key order
     private int product; //Foreign key product
@@ -8,7 +8,7 @@ public class OrderDetail {
     private int price;
 
     // Constructor
-    public OrderDetail(int order, int product, int quantity, int price) {
+    public OrderDetails(int order, int product, int quantity, int price) {
         this.order = order;
         this.product = product;
         this.quantity = quantity;

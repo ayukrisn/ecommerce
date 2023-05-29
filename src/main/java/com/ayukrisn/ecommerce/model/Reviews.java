@@ -1,13 +1,13 @@
 package com.ayukrisn.ecommerce.model;
 
-public class Review {
+public class Reviews {
     // Variables
     private int order; //Foreign key: order
     private int star;
     private String description;
 
     // Constructor
-    public Review(int order, int star, String description) {
+    public Reviews(int order, int star, String description) {
         this.order = order;
         this.star = star;
         this.description = description;

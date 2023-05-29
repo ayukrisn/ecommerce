@@ -1,6 +1,6 @@
 package com.ayukrisn.ecommerce.model;
 
-public class User {
+public class Users {
 
     // Variables
     private int id;
@@ -8,11 +8,14 @@ public class User {
     private String last_name;
     private String email;
     private String phone_number;
-    public static enum Type {BUYER, SELLER}
+    public static enum Type {buyer, seller}
     private Type type;
 
     // Constructor
-    public User(int id, String first_name, String last_name, String email, String phone_number, String type){
+    public Users () {
+
+    }
+    public Users(int id, String first_name, String last_name, String email, String phone_number, String type){
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -60,7 +63,7 @@ public class User {
     public Type getType() {
         return type;
     }
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = Type.valueOf(type);
     }
 }
