@@ -57,7 +57,7 @@ public class Database {
                 "FOREIGN KEY(user) REFERENCES user(id));"
                 );
 
-        // System.out.println("Tabel Addresses berhasil dibuat");
+        // System.out.println("Tabel AddressDAO berhasil dibuat");
     }
 
     private static void createTableProducts (Connection connection) throws  SQLException {

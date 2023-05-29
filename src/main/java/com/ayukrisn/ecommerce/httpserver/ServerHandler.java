@@ -10,6 +10,7 @@ import java.sql.SQLException;
 public class ServerHandler implements HttpHandler {
     ResponseHandler responseHandler = new ResponseHandler();
     UserRequestHandler userReqHandler = new UserRequestHandler();
+    ProductRequestHandler productReqHandler = new ProductRequestHandler();
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String[] path = exchange.getRequestURI().getPath().split("/");
@@ -23,11 +24,27 @@ public class ServerHandler implements HttpHandler {
                 JSONObject jsonUser = null;
                 try {
                     jsonUser = userReqHandler.getUser(path);
+                    if (jsonUser != null)
                     responseHandler.getResponse(exchange, jsonUser.toString(), path, "users", 200);
+                    else {
+                        responseHandler.sendResponse(exchange, 404, "ID Not Found");
+                    }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-            } // else if
+            } else if ("products".equals(path[1])) {
+                 JSONObject jsonProduct = null;
+                 try {
+                     jsonProduct = productReqHandler.getProduct(path);
+                     if (jsonProduct != null)
+                         responseHandler.getResponse(exchange, jsonProduct.toString(), path, "products", 200);
+                     else {
+                         responseHandler.sendResponse(exchange, 404, "ID Not Found");
+                     }
+                 } catch (SQLException e) {
+                     throw new RuntimeException(e);
+                 }
+             }
 
         } else if ("PUT".equals(exchange.getRequestMethod())) {
             // PUT

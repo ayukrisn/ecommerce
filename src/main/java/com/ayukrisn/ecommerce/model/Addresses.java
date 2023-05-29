@@ -15,6 +15,7 @@ public class Addresses {
     private String postcode;
 
     // Constructor
+    public Addresses(){}
     public Addresses(int users, Type type, String line1, String line2, String city, String province, String postcode) {
         this.type = type;
         this.user = users;
@@ -36,8 +37,8 @@ public class Addresses {
     public Type getType() {
         return type;
     }
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = Type.valueOf(type);
     }
 
     public String getLine1() {

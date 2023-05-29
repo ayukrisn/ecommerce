@@ -10,6 +10,7 @@ public class Products {
     private int stock;
 
     // Constructor
+    public  Products() {}
     public Products(int id, int seller, String title, String description, int price, int stock) {
         this.id = id;
         this.seller = seller; //Foreign key: Users
