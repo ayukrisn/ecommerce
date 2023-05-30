@@ -19,6 +19,12 @@ Program pada dasarnya dapat digunakan dengan mengakses **localhost:8072** di web
 `http://localhost:8072/users/3`
 ![image](https://github.com/ayukrisn/ecommerce/assets/113322119/d90faba3-180c-45eb-9d31-789ca5624d9e)
 
+`localhost:8072/users?type=buyer`
+![image](https://github.com/ayukrisn/ecommerce/assets/113322119/39fbb2ff-125d-4665-976a-ceb0a34003d6)
+
+`localhost:8072/users?type=seller`
+![image](https://github.com/ayukrisn/ecommerce/assets/113322119/0ece3270-8787-4b2c-bb1d-513f0448ef81)
+
 `http://localhost:8072/users/4/products`
 ![image](https://github.com/ayukrisn/ecommerce/assets/113322119/6a611932-b72f-4f4a-b632-3d1bd28bff5c)
 
