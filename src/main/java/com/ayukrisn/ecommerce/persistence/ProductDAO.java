@@ -54,12 +54,14 @@ public class ProductDAO {
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
             System.out.println("Connected to database");
-            if (idSeller.equals("*"))
+            if (idSeller.equals("*")) {
                 statement = connection.prepareStatement("SELECT * FROM products");
-            else
-                System.out.println("check");
+            }
+            else {
                 statement = connection.prepareStatement("SELECT * FROM products WHERE seller =" + idSeller);
+            }
             result = statement.executeQuery();
+            System.out.println("select done");
 
             while (result.next()) {
                 Products product = new Products();

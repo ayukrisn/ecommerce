@@ -1,10 +1,7 @@
 package com.ayukrisn.ecommerce.httpserver;
 
 import com.ayukrisn.ecommerce.model.*;
-import com.ayukrisn.ecommerce.persistence.AddressDAO;
-import com.ayukrisn.ecommerce.persistence.OrderDAO;
-import com.ayukrisn.ecommerce.persistence.ProductDAO;
-import com.ayukrisn.ecommerce.persistence.UserDAO;
+import com.ayukrisn.ecommerce.persistence.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,6 +14,7 @@ public class UserRequestHandler{
     UserDAO userDAO = new UserDAO();
     AddressDAO addressDAO = new AddressDAO();
     OrderDAO orderDAO = new OrderDAO();
+    ReviewDAO reviewDAO = new ReviewDAO();
     public JSONObject getUser(String[] path) throws SQLException {
         int idUser = 0;
         JSONObject jsonUser = null;
@@ -99,6 +97,21 @@ public class UserRequestHandler{
                 }
                 jsonOrders.put("Order Record", jsonOrdersArray);
                 jsonUser.put("Buyer's Order Record", jsonOrders);
+            } else if ("reviews".equals(path[3])) {
+                jsonUser = new JSONObject();
+                JSONObject jsonReviews = new JSONObject();
+                idUser = Integer.valueOf(path[2]);
+                JSONArray jsonReviewsArray = new JSONArray();
+                ArrayList<Reviews> listReviews = reviewDAO.selectReviewById(idUser);
+                for (Reviews review : listReviews) {
+                    JSONObject jsonReviewRecord = new JSONObject();
+                    jsonReviewRecord.put("order", review.getOrder());
+                    jsonReviewRecord.put("star", review.getStar());
+                    jsonReviewRecord.put("description", review.getDescription());
+                    jsonReviewsArray.put(jsonReviewRecord);
+                }
+                jsonReviews.put("Review Record", jsonReviewsArray);
+                jsonUser.put("Buyer's Reviews Record", jsonReviews);
             }
         }
         return jsonUser;

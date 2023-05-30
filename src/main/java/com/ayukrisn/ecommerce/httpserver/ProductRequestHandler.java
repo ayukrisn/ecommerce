@@ -37,7 +37,7 @@ public class ProductRequestHandler {
             jsonProduct = new JSONObject();
             int idProduct = Integer.valueOf(path[2]);
             Products product = productDAO.selectProductById(idProduct);
-            Users user = userDAO.selectUserById(product.getId());
+            Users user = userDAO.selectUserById(product.getSeller());
             if (product.getId() != 0) {
                 JSONObject jsonProductRecord = new JSONObject();
                 jsonProductRecord.put("id", product.getId());

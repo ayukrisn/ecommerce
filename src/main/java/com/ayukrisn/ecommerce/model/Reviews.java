@@ -28,4 +28,11 @@ public class Reviews {
     public void setStar(int star) {
         this.star = star;
     }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
