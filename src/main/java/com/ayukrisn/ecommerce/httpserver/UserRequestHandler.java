@@ -1,8 +1,9 @@
 package com.ayukrisn.ecommerce.httpserver;
 
-import com.ayukrisn.ecommerce.model.Addresses;
-import com.ayukrisn.ecommerce.model.Users;
+import com.ayukrisn.ecommerce.model.*;
 import com.ayukrisn.ecommerce.persistence.AddressDAO;
+import com.ayukrisn.ecommerce.persistence.OrderDAO;
+import com.ayukrisn.ecommerce.persistence.ProductDAO;
 import com.ayukrisn.ecommerce.persistence.UserDAO;
 
 import org.json.JSONArray;
@@ -12,9 +13,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserRequestHandler{
+    ProductDAO productDAO = new ProductDAO();
     UserDAO userDAO = new UserDAO();
     AddressDAO addressDAO = new AddressDAO();
+    OrderDAO orderDAO = new OrderDAO();
     public JSONObject getUser(String[] path) throws SQLException {
+        int idUser = 0;
         JSONObject jsonUser = null;
         if (path.length == 2) {
             jsonUser = new JSONObject();
@@ -34,7 +38,7 @@ public class UserRequestHandler{
         }
         else if (path.length == 3){
             jsonUser = new JSONObject();
-            int idUser = Integer.valueOf(path[2]);
+            idUser = Integer.valueOf(path[2]);
             Users user = userDAO.selectUserById(idUser);
             JSONArray jsonAddressesArray = new JSONArray();
             ArrayList<Addresses> listAddresses = addressDAO.selectAddressesByUser(idUser);
@@ -58,10 +62,44 @@ public class UserRequestHandler{
                 }
                 jsonUser.put("User Record", jsonUserRecord);
                 jsonUser.put("Addresses Record", jsonAddressesArray);
-            } else {
-                jsonUser = null;
             }
-
+        } else if (path.length == 4) {
+            if ("products".equals(path[3])) {
+                jsonUser = new JSONObject();
+                JSONObject jsonProduct = new JSONObject();
+                JSONArray jsonProductArray = new JSONArray();
+                ArrayList<Products> listProducts = productDAO.selectMultiple(path[2]);
+                for (Products product : listProducts) {
+                    JSONObject jsonProductRecord = new JSONObject();
+                    jsonProductRecord.put("id", product.getId());
+                    jsonProductRecord.put("seller", product.getSeller());
+                    jsonProductRecord.put("title", product.getTitle());
+                    jsonProductRecord.put("description", product.getDescription());
+                    jsonProductRecord.put("price", product.getPrice());
+                    jsonProductRecord.put("stock", product.getStock());
+                    jsonProductArray.put(jsonProductRecord);
+                }
+                jsonProduct.put("Product Record", jsonProductArray);
+                jsonUser.put("Seller's Product Record", jsonProduct);
+            } else if ("orders".equals(path[3])) {
+                jsonUser = new JSONObject();
+                JSONObject jsonOrders = new JSONObject();
+                idUser = Integer.valueOf(path[2]);
+                JSONArray jsonOrdersArray = new JSONArray();
+                ArrayList<Orders> listOrders = orderDAO.selectOrderById("buyer", idUser);
+                for (Orders order : listOrders) {
+                    JSONObject jsonOrderRecord = new JSONObject();
+                    jsonOrderRecord.put("id", order.getId());
+                    jsonOrderRecord.put("buyer", order.getBuyer());
+                    jsonOrderRecord.put("note", order.getNote());
+                    jsonOrderRecord.put("total", order.getTotal());
+                    jsonOrderRecord.put("discount", order.getDiscount());
+                    jsonOrderRecord.put("is_paid", order.getIs_paid());
+                    jsonOrdersArray.put(jsonOrderRecord);
+                }
+                jsonOrders.put("Order Record", jsonOrdersArray);
+                jsonUser.put("Buyer's Order Record", jsonOrders);
+            }
         }
         return jsonUser;
     }

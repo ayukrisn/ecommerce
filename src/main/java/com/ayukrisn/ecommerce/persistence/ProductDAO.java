@@ -1,6 +1,5 @@
 package com.ayukrisn.ecommerce.persistence;
 import com.ayukrisn.ecommerce.model.Products;
-import com.ayukrisn.ecommerce.model.Users;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class ProductDAO {
     }
 
     // SELECT MULTIPLE PRODUCTS FROM DATABASE
-    public ArrayList<Products> selectAll() throws SQLException {
+    public ArrayList<Products> selectMultiple(String idSeller) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet result = null;
@@ -55,7 +54,11 @@ public class ProductDAO {
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
             System.out.println("Connected to database");
-            statement = connection.prepareStatement("SELECT * FROM products");
+            if (idSeller.equals("*"))
+                statement = connection.prepareStatement("SELECT * FROM products");
+            else
+                System.out.println("check");
+                statement = connection.prepareStatement("SELECT * FROM products WHERE seller =" + idSeller);
             result = statement.executeQuery();
 
             while (result.next()) {

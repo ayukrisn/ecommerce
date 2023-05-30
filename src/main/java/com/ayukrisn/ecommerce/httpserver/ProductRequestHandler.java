@@ -19,19 +19,19 @@ public class ProductRequestHandler {
         JSONObject jsonProduct = null;
         if (path.length == 2) {
             jsonProduct = new JSONObject();
-            JSONArray jsonUserArray = new JSONArray();
-            ArrayList<Products> listProducts = productDAO.selectAll();
+            JSONArray jsonProductArray = new JSONArray();
+            ArrayList<Products> listProducts = productDAO.selectMultiple("*");
             for (Products product : listProducts) {
-                JSONObject jsonUserRecord = new JSONObject();
-                jsonUserRecord.put("id", product.getId());
-                jsonUserRecord.put("seller", product.getSeller());
-                jsonUserRecord.put("title", product.getTitle());
-                jsonUserRecord.put("description", product.getDescription());
-                jsonUserRecord.put("price", product.getPrice());
-                jsonUserRecord.put("stock", product.getStock());
-                jsonUserArray.put(jsonUserRecord);
+                JSONObject jsonProductRecord = new JSONObject();
+                jsonProductRecord.put("id", product.getId());
+                jsonProductRecord.put("seller", product.getSeller());
+                jsonProductRecord.put("title", product.getTitle());
+                jsonProductRecord.put("description", product.getDescription());
+                jsonProductRecord.put("price", product.getPrice());
+                jsonProductRecord.put("stock", product.getStock());
+                jsonProductArray.put(jsonProductRecord);
             }
-            jsonProduct.put("Product Record", jsonUserArray);
+            jsonProduct.put("Product Record", jsonProductArray);
         }
         else if (path.length == 3){
             jsonProduct = new JSONObject();

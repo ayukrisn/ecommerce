@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 public class OrderDAO {
     // SELECT ORDERS FROM ID
-    public Orders selectOrderById(String idType, int id) throws SQLException {
+    public ArrayList<Orders> selectOrderById(String idType, int id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet result = null;
-        Orders order = new Orders();
+        ArrayList<Orders> listOrders = new ArrayList<Orders>();
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -25,12 +25,14 @@ public class OrderDAO {
             result = statement.executeQuery();
 
             while(result.next()) {
+                Orders order = new Orders();
                 order.setId(result.getInt("id"));
                 order.setBuyer(result.getInt("buyer"));
                 order.setNote(result.getString("note"));
                 order.setTotal(result.getInt("total"));
                 order.setDiscount(result.getInt("discount"));
                 order.setIs_paid(result.getInt("is_paid"));
+                listOrders.add(order);
             }
 
         } catch (SQLException e) {
@@ -42,7 +44,7 @@ public class OrderDAO {
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         }
-        return order;
+        return listOrders;
     }
 
     // SELECT ORDER DETAILS FROM ORDER'S ID

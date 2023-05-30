@@ -15,10 +15,12 @@ public class OrderRequestHandler {
     public JSONObject getOrder(String path[]) throws SQLException {
         JSONObject jsonOrders = new JSONObject();
         int idOrders = Integer.valueOf(path[2]);
-        Orders order = orderDAO.selectOrderById("id", idOrders);
+        ArrayList<Orders> listOrders = orderDAO.selectOrderById("id", idOrders);
         ArrayList<OrderDetails> listOrderDetails = orderDAO.selectOrderDetailsById(idOrders);
+        JSONObject jsonOrderandDetail = new JSONObject();
         JSONArray jsonODetailsArray = new JSONArray();
-        if (order.getId() != 0) {
+        JSONArray jsonOrdersArray = new JSONArray();
+        for (Orders order : listOrders) {
             JSONObject jsonOrderRecord = new JSONObject();
             jsonOrderRecord.put("id", order.getId());
             jsonOrderRecord.put("buyer", order.getBuyer());
@@ -35,12 +37,10 @@ public class OrderRequestHandler {
                 jsonDetailRecord.put("price", details.getPrice());
                 jsonODetailsArray.put(jsonDetailRecord);
             }
-            jsonOrders.put("Order Record", jsonOrderRecord);
-            jsonOrders.put("Order Details Record", jsonODetailsArray);
-
-        } else {
-            jsonOrders = null;
-        }
+            jsonOrderandDetail.put("Orders Record", jsonOrderRecord);
+            jsonOrderandDetail.put("Order Details Record", jsonODetailsArray);
+            jsonOrdersArray.put(jsonOrderandDetail);
+        } jsonOrders.put("Orders based on " + "id", jsonOrdersArray);
         return jsonOrders;
     }
 
