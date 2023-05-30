@@ -1,10 +1,7 @@
 package com.ayukrisn.ecommerce.httpserver;
 
 import com.ayukrisn.ecommerce.model.*;
-import com.ayukrisn.ecommerce.persistence.AddressDAO;
-import com.ayukrisn.ecommerce.persistence.OrderDAO;
-import com.ayukrisn.ecommerce.persistence.ProductDAO;
-import com.ayukrisn.ecommerce.persistence.UserDAO;
+import com.ayukrisn.ecommerce.persistence.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,6 +14,9 @@ public class UserRequestHandler{
     UserDAO userDAO = new UserDAO();
     AddressDAO addressDAO = new AddressDAO();
     OrderDAO orderDAO = new OrderDAO();
+    ReviewDAO reviewDAO = new ReviewDAO();
+
+    // GET USER (Select in Database)
     public JSONObject getUser(String[] path) throws SQLException {
         int idUser = 0;
         JSONObject jsonUser = null;
@@ -99,8 +99,54 @@ public class UserRequestHandler{
                 }
                 jsonOrders.put("Order Record", jsonOrdersArray);
                 jsonUser.put("Buyer's Order Record", jsonOrders);
+            } else if ("reviews".equals(path[3])) {
+                jsonUser = new JSONObject();
+                JSONObject jsonReviews = new JSONObject();
+                idUser = Integer.valueOf(path[2]);
+                JSONArray jsonReviewsArray = new JSONArray();
+                ArrayList<Reviews> listReviews = reviewDAO.selectReviewById(idUser);
+                for (Reviews review : listReviews) {
+                    JSONObject jsonReviewRecord = new JSONObject();
+                    jsonReviewRecord.put("order", review.getOrder());
+                    jsonReviewRecord.put("star", review.getStar());
+                    jsonReviewRecord.put("description", review.getDescription());
+                    jsonReviewsArray.put(jsonReviewRecord);
+                }
+                jsonReviews.put("Review Record", jsonReviewsArray);
+                jsonUser.put("Buyer's Reviews Record", jsonReviews);
             }
         }
         return jsonUser;
+    }
+
+    // POST USER (INSERT in Database)
+    public String postUsers(JSONObject jsonReqBody) throws SQLException {
+        Users user = userParseJSONData(jsonReqBody);
+        return userDAO.addNewUser(user);
+    }
+
+    // PUT USER (UPDATE in database)
+    public String putUsers (JSONObject jsonReqBody, String[] path) throws SQLException {
+        Users user = userParseJSONData(jsonReqBody);
+        int idUser = Integer.valueOf(path[2]);
+
+        return userDAO.updateUser(user, idUser);
+    }
+    private Users userParseJSONData (JSONObject jsonReqBody) {
+        Users user = new Users();
+        System.out.println("Getting data from request");
+        user.setId(jsonReqBody.optInt("id"));
+        user.setFirst_name(jsonReqBody.optString("first_name"));
+        user.setLast_name(jsonReqBody.optString("last_name"));
+        user.setEmail(jsonReqBody.optString("email"));
+        user.setPhone_number(jsonReqBody.optString("phone_number"));
+        user.setType(jsonReqBody.optString("type"));
+
+        return user;
+    }
+    // DELETE USER
+    public String deleteUser(String[] path) throws SQLException, ClassNotFoundException {
+        int idUser = Integer.valueOf(path[2]);
+        return userDAO.deleteUser(idUser);
     }
 }

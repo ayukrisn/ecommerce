@@ -1,7 +1,5 @@
 package com.ayukrisn.ecommerce.httpserver;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
@@ -22,19 +20,3 @@ public class Main {
         }
     }
 }
-
-/*
-    private class RequestHandler implements HttpHandler {
-        public void handle (HttpExchange httpExchange) throws IOException {
-            PrintStream out = new PrintStream(httpExchange.getResponseBody());
-            handle(httpExchange, out);
-        }
-
-        private void handle(HttpExchange httpExchange, PrintStream out) {
-            URI uri = httpExchange.getRequestURI();
-            String path = uri.getPath();
-            System.out.printf("path: %s\n", path);
-            ServerHandler.processHttpExchange(httpExchange);
-        }
-    }
- */

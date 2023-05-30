@@ -1,5 +1,6 @@
 package com.ayukrisn.ecommerce.httpserver;
 
+import com.ayukrisn.ecommerce.model.Addresses;
 import com.ayukrisn.ecommerce.model.Products;
 import com.ayukrisn.ecommerce.model.Users;
 import com.ayukrisn.ecommerce.persistence.ProductDAO;
@@ -37,7 +38,7 @@ public class ProductRequestHandler {
             jsonProduct = new JSONObject();
             int idProduct = Integer.valueOf(path[2]);
             Products product = productDAO.selectProductById(idProduct);
-            Users user = userDAO.selectUserById(product.getId());
+            Users user = userDAO.selectUserById(product.getSeller());
             if (product.getId() != 0) {
                 JSONObject jsonProductRecord = new JSONObject();
                 jsonProductRecord.put("id", product.getId());
@@ -62,5 +63,35 @@ public class ProductRequestHandler {
 
         }
         return jsonProduct;
+    }
+    // POST PRODUCTS (INSERT in Database)
+    public String postProduct(JSONObject jsonReqBody) throws SQLException {
+        Products product = productsParseJSONData(jsonReqBody);
+        return productDAO.addNewProduct(product);
+    }
+
+    // PUT PRODUCTS (UPDATE in Database)
+    public String putProduct(JSONObject jsonReqBody, String[] path) throws SQLException {
+        Products product = productsParseJSONData(jsonReqBody);
+        int idProduct = Integer.valueOf(path[2]);
+        return productDAO.updateProduct(product, idProduct);
+    }
+
+    // DELETE PRODUCTS
+    public String deleteProduct(String[] path) throws SQLException, ClassNotFoundException {
+        int idProduct = Integer.valueOf(path[2]);
+        return productDAO.deleteProduct(idProduct);
+    }
+
+    private Products productsParseJSONData(JSONObject jsonReqBody) throws SQLException {
+        Products product = new Products();
+        product.setId(jsonReqBody.optInt("id"));
+        product.setSeller(jsonReqBody.optInt("seller"));
+        product.setTitle(jsonReqBody.optString("title"));
+        product.setDescription(jsonReqBody.optString("description"));
+        product.setPrice(jsonReqBody.optInt("price"));
+        product.setStock(jsonReqBody.optInt("stock"));
+
+        return product;
     }
 }
