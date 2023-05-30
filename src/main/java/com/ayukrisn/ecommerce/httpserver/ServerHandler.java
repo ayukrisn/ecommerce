@@ -63,22 +63,6 @@ public class ServerHandler implements HttpHandler {
                      throw new RuntimeException(e);
                  }
              }
-
-        } else if ("PUT".equals(exchange.getRequestMethod())) {
-            // PUT
-            if ("users".equals(path[1])) {
-
-            } else if ("addresses".equals(path[1])) {
-
-            } else if ("products".equals(path[1])) {
-
-            } else if ("orders".equals(path[1])) {
-
-            } else if ("orderDetails".equals(path[1])) {
-
-            } else if ("review".equals(path[1])) {
-
-            }
         } else if ("POST".equals(exchange.getRequestMethod())) {
             // POST
             if ("users".equals(path[1])) {
@@ -129,6 +113,62 @@ public class ServerHandler implements HttpHandler {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+            } else {
+                response = "404 NOT FOUND";
+                responseHandler.sendResponse(exchange, 400, response);
+            }
+        } else if ("PUT".equals(exchange.getRequestMethod())) {
+            if ("users".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = userReqHandler.putUsers(jsonReqBody, path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("addresses".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = addressRequestHandler.putAddress(jsonReqBody, path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("products".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = productReqHandler.putProduct(jsonReqBody, path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("orders".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = orderReqHandler.putOrder(jsonReqBody, path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("order_details".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = orderReqHandler.putOrderDetails(jsonReqBody, path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("reviews".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = reviewReqHandler.putReview(jsonReqBody, path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                response = "404 NOT FOUND";
+                responseHandler.sendResponse(exchange, 400, response);
             }
         } else if ("DELETE".equals(exchange.getRequestMethod())) {
             // DELETE
@@ -144,6 +184,9 @@ public class ServerHandler implements HttpHandler {
 
             } else if ("review".equals(path[1])) {
 
+            } else {
+                response = "404 NOT FOUND";
+                responseHandler.sendResponse(exchange, 400, response);
             }
         } else { //untuk request method yang tidak disupport
             handleUnsupportedMethod(exchange);

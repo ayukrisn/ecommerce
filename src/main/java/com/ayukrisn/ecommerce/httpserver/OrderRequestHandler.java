@@ -1,5 +1,6 @@
 package com.ayukrisn.ecommerce.httpserver;
 
+import com.ayukrisn.ecommerce.model.Addresses;
 import com.ayukrisn.ecommerce.model.OrderDetails;
 import com.ayukrisn.ecommerce.model.Orders;
 import com.ayukrisn.ecommerce.model.Users;
@@ -47,6 +48,18 @@ public class OrderRequestHandler {
 
     // POST ORDER
     public String postOrders(JSONObject jsonReqBody) throws SQLException {
+        Orders orders = ordersParseJSONData(jsonReqBody);
+        return orderDAO.addNewOrder(orders);
+    }
+
+    // PUT ORDER
+    public String putOrder (JSONObject jsonReqBody, String[] path) throws SQLException {
+        Orders orders = ordersParseJSONData(jsonReqBody);
+        int idOrder = Integer.valueOf(path[2]);
+        return orderDAO.updateOrders(orders, idOrder);
+    }
+
+    private Orders ordersParseJSONData(JSONObject jsonReqBody) throws SQLException {
         Orders orders = new Orders();
         System.out.println("Getting data from request");
         orders.setId(jsonReqBody.optInt("id"));
@@ -56,11 +69,23 @@ public class OrderRequestHandler {
         orders.setDiscount(jsonReqBody.optInt("discount"));
         orders.setIs_paid(jsonReqBody.optInt("is_paid"));
 
-        return orderDAO.addNewOrder(orders);
+        return orders;
     }
 
     // POST ORDER DETAILS
     public String postOrderDetails(JSONObject jsonReqBody) throws SQLException {
+        OrderDetails orderDetails = orderDetailsParseJSONData(jsonReqBody);
+        return orderDAO.addNewOrderDetail(orderDetails);
+    }
+
+    // PUT ORDER DETAIL
+    public String putOrderDetails (JSONObject jsonReqBody, String[] path) throws SQLException {
+        OrderDetails orderDetails = orderDetailsParseJSONData(jsonReqBody);
+        int idOrder = Integer.valueOf(path[2]);
+        return orderDAO.updateOrderDetails(orderDetails, idOrder);
+    }
+
+    private OrderDetails orderDetailsParseJSONData(JSONObject jsonReqBody) throws SQLException {
         OrderDetails orderDetails = new OrderDetails();
         System.out.println("Getting data from request");
         orderDetails.setOrder(jsonReqBody.optInt("orders"));
@@ -68,7 +93,7 @@ public class OrderRequestHandler {
         orderDetails.setQuantity(jsonReqBody.optInt("quantity"));
         orderDetails.setPrice(jsonReqBody.optInt("price"));
 
-        return orderDAO.addNewOrderDetail(orderDetails);
+        return orderDetails;
     }
 
 }

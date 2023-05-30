@@ -1,6 +1,7 @@
 package com.ayukrisn.ecommerce.persistence;
 
 import com.ayukrisn.ecommerce.model.Addresses;
+import com.ayukrisn.ecommerce.model.Users;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -74,6 +75,44 @@ public class AddressDAO {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
+    // UPDATE ADDRESS BASED ON ID
+    public String updateAddress(Addresses address, int idUser) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+        System.out.println("Connected to database");
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("UPDATE addresses SET type = ?, line1 = ?, line2 = ?, " +
+                    "city = ?, province = ?, postcode = ? WHERE user =" + idUser);
+            statement.setString(1, address.getType().toString());
+            statement.setString(2, address.getLine1());
+            statement.setString(3, address.getLine2());
+            statement.setString(4, address.getCity());
+            statement.setString(5, address.getProvince());
+            statement.setString(6, address.getPostcode());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the addresses table has been updated";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (statement != null) statement.close();

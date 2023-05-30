@@ -1,9 +1,6 @@
 package com.ayukrisn.ecommerce.persistence;
 
-import com.ayukrisn.ecommerce.model.OrderDetails;
-import com.ayukrisn.ecommerce.model.Orders;
-import com.ayukrisn.ecommerce.model.Products;
-import com.ayukrisn.ecommerce.model.Users;
+import com.ayukrisn.ecommerce.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -138,10 +135,82 @@ public class OrderDAO {
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                response = rowsAffected + " row(s) in the order_details table has been added";
+                response = rowsAffected + " row(s) in the order_details table has been affected";
                 System.out.println(response);
             } else {
                 response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
+    // UPDATE ORDER BASED ON ID
+    public String updateOrders(Orders orders, int idOrder) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+        System.out.println("Connected to database");
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("UPDATE orders SET buyer = ?, note = ?, total = ?, " +
+                    "discount = ?, is_paid = ? WHERE id =" + idOrder);
+            statement.setInt(1, orders.getBuyer());
+            statement.setString(2, orders.getNote());
+            statement.setInt(3, orders.getTotal());
+            statement.setInt(4, orders.getDiscount());
+            statement.setInt(5, orders.getIs_paid());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) have been affected";
+                System.out.println(response);
+            } else {
+                response = "No rows have been affected";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
+    // UPDATE ORDER DETAILS BASED ON ID
+    public String updateOrderDetails(OrderDetails orderDetails, int idOrder) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
+            statement = connection.prepareStatement("UPDATE order_details SET product = ?, quantity = ?, price = ? " +
+                    "WHERE orders =" + idOrder);
+            statement.setInt(1, orderDetails.getProduct());
+            statement.setInt(2, orderDetails.getQuantity());
+            statement.setInt(3, orderDetails.getPrice());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) have been affected";
+                System.out.println(response);
+            } else {
+                response = "No rows have been affected";
                 System.out.println(response);
             }
         } catch (SQLException | ClassNotFoundException e) {

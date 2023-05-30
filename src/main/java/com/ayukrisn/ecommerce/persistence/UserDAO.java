@@ -113,6 +113,42 @@ public class UserDAO {
         return response;
     }
 
+    // UPDATE USER BASED ON ID
+    public String updateUser(Users user, int idUser) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+        System.out.println("Connected to database");
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("UPDATE users SET first_name = ?, last_name = ?, email = ?, phone_number = ?, " +
+                    "type = ? WHERE id =" + idUser);
+            statement.setString(1, user.getFirst_name());
+            statement.setString(2, user.getLast_name());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPhone_number());
+            statement.setString(5, user.getType().toString());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the users table has been updated";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
     // DELETE USER BASED ON ID
     public String deleteUser(int idUser) throws SQLException, ClassNotFoundException {
         Connection connection = null;

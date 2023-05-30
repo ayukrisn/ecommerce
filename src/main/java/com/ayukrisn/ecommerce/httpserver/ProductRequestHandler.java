@@ -1,5 +1,6 @@
 package com.ayukrisn.ecommerce.httpserver;
 
+import com.ayukrisn.ecommerce.model.Addresses;
 import com.ayukrisn.ecommerce.model.Products;
 import com.ayukrisn.ecommerce.model.Users;
 import com.ayukrisn.ecommerce.persistence.ProductDAO;
@@ -65,6 +66,18 @@ public class ProductRequestHandler {
     }
     // POST PRODUCTS (INSERT in Database)
     public String postProduct(JSONObject jsonReqBody) throws SQLException {
+        Products product = productsParseJSONData(jsonReqBody);
+        return productDAO.addNewProduct(product);
+    }
+
+    // PUT PRODUCTS (UPDATE in Database)
+    public String putProduct(JSONObject jsonReqBody, String[] path) throws SQLException {
+        Products product = productsParseJSONData(jsonReqBody);
+        int idProduct = Integer.valueOf(path[2]);
+        return productDAO.updateProduct(product, idProduct);
+    }
+
+    private Products productsParseJSONData(JSONObject jsonReqBody) throws SQLException {
         Products product = new Products();
         product.setId(jsonReqBody.optInt("id"));
         product.setSeller(jsonReqBody.optInt("seller"));
@@ -73,6 +86,6 @@ public class ProductRequestHandler {
         product.setPrice(jsonReqBody.optInt("price"));
         product.setStock(jsonReqBody.optInt("stock"));
 
-        return productDAO.addNewProduct(product);
+        return product;
     }
 }

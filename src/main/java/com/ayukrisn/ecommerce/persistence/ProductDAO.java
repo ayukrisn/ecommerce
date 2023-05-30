@@ -1,4 +1,5 @@
 package com.ayukrisn.ecommerce.persistence;
+import com.ayukrisn.ecommerce.model.Addresses;
 import com.ayukrisn.ecommerce.model.Products;
 import com.ayukrisn.ecommerce.model.Users;
 
@@ -119,6 +120,44 @@ public class ProductDAO {
         }
         return response;
     }
+
+    // UPDATE PRODUCT BASED ON ID
+    public String updateProduct(Products product, int idProduct) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+        System.out.println("Connected to database");
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("UPDATE products SET seller = ?, title = ?, description = ?, " +
+                    "price = ?, stock = ? WHERE id = " + idProduct);
+            statement.setInt(1, product.getSeller());
+            statement.setString(2, product.getTitle());
+            statement.setString(3, product.getDescription());
+            statement.setInt(4, product.getPrice());
+            statement.setInt(5, product.getStock());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the products table has been updated";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
 
     // DELETE PRODUCT BASED ON ID
     public String deleteProduct(int idProduct) throws SQLException, ClassNotFoundException {

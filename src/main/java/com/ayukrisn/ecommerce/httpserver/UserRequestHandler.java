@@ -121,6 +121,18 @@ public class UserRequestHandler{
 
     // POST USER (INSERT in Database)
     public String postUsers(JSONObject jsonReqBody) throws SQLException {
+        Users user = userParseJSONData(jsonReqBody);
+        return userDAO.addNewUser(user);
+    }
+
+    // PUT USER (UPDATE in database)
+    public String putUsers (JSONObject jsonReqBody, String[] path) throws SQLException {
+        Users user = userParseJSONData(jsonReqBody);
+        int idUser = Integer.valueOf(path[2]);
+
+        return userDAO.updateUser(user, idUser);
+    }
+    private Users userParseJSONData (JSONObject jsonReqBody) {
         Users user = new Users();
         System.out.println("Getting data from request");
         user.setId(jsonReqBody.optInt("id"));
@@ -130,9 +142,8 @@ public class UserRequestHandler{
         user.setPhone_number(jsonReqBody.optString("phone_number"));
         user.setType(jsonReqBody.optString("type"));
 
-        return userDAO.addNewUser(user);
+        return user;
     }
-
     // DELETE USER (DELETE in Database)
 //    public String deleteUsers(String[] path) {
 //
