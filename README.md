@@ -7,7 +7,7 @@ Kelas: PBO E
 Proyek ini merupakan suatu backendAPI sederhana yang dibuat dengan Java dengan Maven, yang mana disusun untuk aplikasi e-commerce sederhana. API digunakan untuk mengakses dan melakukan manipulasi data pada tiap entitas dari database dan dapat meng-handle GET, POST, PUT, DELETE. Response yang diberikan oleh server API sendiri menggunakan format **JSON** dan data disimpan pada **SQLite**. Pengujian aplikasi dilakukan pada aplikasi **Postman**.
 
 ## Struktur Program
-Program ini memiliki 3 tipe class, yakni class untuk masing-masing Entitas yang terletak pada folder **model**, class untuk keperluan API pada folder **api**, dan class untuk keperluan database pada folder **persistence**.
+Program ini memiliki 3 tipe class, yakni class untuk masing-masing Entitas yang terletak pada folder **model**, class untuk keperluan API dan HTTP Server pada folder **httpserver**, dan class untuk keperluan database pada folder **persistence**.
 
 ## Test pada Postman
 Program pada dasarnya dapat digunakan dengan mengakses **localhost:8072** di web browser masing-masing. Namun, untuk mempermudah test, maka digunakan Postman.
