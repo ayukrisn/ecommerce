@@ -63,4 +63,16 @@ public class ProductRequestHandler {
         }
         return jsonProduct;
     }
+    // POST PRODUCTS (INSERT in Database)
+    public String postProduct(JSONObject jsonReqBody) throws SQLException {
+        Products product = new Products();
+        product.setId(jsonReqBody.optInt("id"));
+        product.setSeller(jsonReqBody.optInt("seller"));
+        product.setTitle(jsonReqBody.optString("title"));
+        product.setDescription(jsonReqBody.optString("description"));
+        product.setPrice(jsonReqBody.optInt("price"));
+        product.setStock(jsonReqBody.optInt("stock"));
+
+        return productDAO.addNewProduct(product);
+    }
 }

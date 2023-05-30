@@ -2,6 +2,7 @@ package com.ayukrisn.ecommerce.httpserver;
 
 import com.ayukrisn.ecommerce.model.OrderDetails;
 import com.ayukrisn.ecommerce.model.Orders;
+import com.ayukrisn.ecommerce.model.Users;
 import com.ayukrisn.ecommerce.persistence.OrderDAO;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,6 +43,32 @@ public class OrderRequestHandler {
             jsonOrdersArray.put(jsonOrderandDetail);
         } jsonOrders.put("Orders based on " + "id", jsonOrdersArray);
         return jsonOrders;
+    }
+
+    // POST ORDER
+    public String postOrders(JSONObject jsonReqBody) throws SQLException {
+        Orders orders = new Orders();
+        System.out.println("Getting data from request");
+        orders.setId(jsonReqBody.optInt("id"));
+        orders.setBuyer(jsonReqBody.optInt("buyer"));
+        orders.setNote(jsonReqBody.optString("note"));
+        orders.setTotal(jsonReqBody.optInt("total"));
+        orders.setDiscount(jsonReqBody.optInt("discount"));
+        orders.setIs_paid(jsonReqBody.optInt("is_paid"));
+
+        return orderDAO.addNewOrder(orders);
+    }
+
+    // POST ORDER DETAILS
+    public String postOrderDetails(JSONObject jsonReqBody) throws SQLException {
+        OrderDetails orderDetails = new OrderDetails();
+        System.out.println("Getting data from request");
+        orderDetails.setOrder(jsonReqBody.optInt("orders"));
+        orderDetails.setProduct(jsonReqBody.optInt("product"));
+        orderDetails.setQuantity(jsonReqBody.optInt("quantity"));
+        orderDetails.setPrice(jsonReqBody.optInt("price"));
+
+        return orderDAO.addNewOrderDetail(orderDetails);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ayukrisn.ecommerce.httpserver;
 
+import com.ayukrisn.ecommerce.persistence.AddressDAO;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
@@ -9,9 +10,12 @@ import java.sql.SQLException;
 
 public class ServerHandler implements HttpHandler {
     ResponseHandler responseHandler = new ResponseHandler();
+    AddressRequestHandler addressRequestHandler = new AddressRequestHandler();
     UserRequestHandler userReqHandler = new UserRequestHandler();
     ProductRequestHandler productReqHandler = new ProductRequestHandler();
     OrderRequestHandler orderReqHandler = new OrderRequestHandler();
+    ReviewRequestHandler reviewReqHandler = new ReviewRequestHandler();
+    String response = null;
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String[] path = exchange.getRequestURI().getPath().split("/");
@@ -62,37 +66,99 @@ public class ServerHandler implements HttpHandler {
 
         } else if ("PUT".equals(exchange.getRequestMethod())) {
             // PUT
+            if ("users".equals(path[1])) {
+
+            } else if ("addresses".equals(path[1])) {
+
+            } else if ("products".equals(path[1])) {
+
+            } else if ("orders".equals(path[1])) {
+
+            } else if ("orderDetails".equals(path[1])) {
+
+            } else if ("review".equals(path[1])) {
+
+            }
         } else if ("POST".equals(exchange.getRequestMethod())) {
             // POST
+            if ("users".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = userReqHandler.postUsers(jsonReqBody);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("addresses".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = addressRequestHandler.postAddresses(jsonReqBody);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("products".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = productReqHandler.postProduct(jsonReqBody);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("orders".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = orderReqHandler.postOrders(jsonReqBody);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("order_details".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = orderReqHandler.postOrderDetails(jsonReqBody);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("reviews".equals(path[1])) {
+                JSONObject jsonReqBody = parseRequestBody(exchange.getRequestBody());
+                try {
+                    response = reviewReqHandler.postReview(jsonReqBody);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         } else if ("DELETE".equals(exchange.getRequestMethod())) {
             // DELETE
+            if ("users".equals(path[1])) {
+
+            } else if ("addresses".equals(path[1])) {
+
+            } else if ("products".equals(path[1])) {
+
+            } else if ("orders".equals(path[1])) {
+
+            } else if ("orderDetails".equals(path[1])) {
+
+            } else if ("review".equals(path[1])) {
+
+            }
         } else { //untuk request method yang tidak disupport
             handleUnsupportedMethod(exchange);
         }
     }
 
     private void handleUnsupportedMethod (HttpExchange exchange) throws IOException {
-        String response = "RequestHandler method tidak didukung/tidak ada.";
+        response = "RequestHandler method tidak didukung/tidak ada.";
         responseHandler.sendResponse(exchange, 405, response);
     }
 
-
-//    private String getRequestBody(HttpExchange exchange) throws IOException {
-//        InputStream requestBodyStream = exchange.getRequestBody();
-//        InputStreamReader requestBodyReader = new InputStreamReader(requestBodyStream);
-//        BufferedReader bufferedReader = new BufferedReader(requestBodyReader);
-//        StringBuilder requestBody = new StringBuilder();
-//        String line;
-//
-//        while ((line = bufferedReader.readLine()) != null) {
-//            requestBody.append(line);
-//        }
-//
-//        bufferedReader.close();
-//        requestBodyReader.close();
-//        requestBodyStream.close();
-//
-//        return requestBody.toString();
-//    }
+    private JSONObject parseRequestBody(InputStream requestBody) throws IOException {
+        byte[] requestBodyBytes = requestBody.readAllBytes();
+        String requestBodyString = new String(requestBodyBytes);
+        return new JSONObject(requestBodyString);
+    }
 
 }

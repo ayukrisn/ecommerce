@@ -29,10 +29,8 @@ public class UserDAO {
                 user.setPhone_number(result.getString("phone_number"));
                 user.setType(result.getString("type"));
             }
-
-            } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (result != null) result.close();
@@ -68,6 +66,7 @@ public class UserDAO {
                 listUsers.add(user);
             }
         } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (result != null) result.close();
@@ -77,27 +76,69 @@ public class UserDAO {
         return listUsers;
     }
 
-    public void addUser(Users users) throws SQLException {
+    // POST USERS TO DATABASE
+    public String addNewUser(Users user) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+        System.out.println("Connected to database");
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+            System.out.println("Inserting data to table users into database");
+            statement.setInt(1, user.getId());
+            statement.setString(2, user.getFirst_name());
+            statement.setString(3, user.getLast_name());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getPhone_number());
+            statement.setString(6, user.getType().toString());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the users table has been added";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
+    // DELETE USER BASED ON ID
+    public String deleteUser(int idUser) throws SQLException, ClassNotFoundException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet result = null;
+        String response;
 
         try {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
-            statement = connection.prepareStatement("INSERT INTO users (id, first_name, last_name," +
-                        "email, phone_number, type" + "VALUES (?,?,?,?,?,?);");
+            statement = connection.prepareStatement("DELETE FROM users WHERE id = " + idUser);
             result = statement.executeQuery();
+            response = "1 row(s) in users table has been deleted. Row: " + idUser;
+            System.out.println(response);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } finally {
+        }
+        finally {
             if (result != null) result.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         }
+
+        return response;
     }
 }

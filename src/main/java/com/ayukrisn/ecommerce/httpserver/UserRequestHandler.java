@@ -15,6 +15,8 @@ public class UserRequestHandler{
     AddressDAO addressDAO = new AddressDAO();
     OrderDAO orderDAO = new OrderDAO();
     ReviewDAO reviewDAO = new ReviewDAO();
+
+    // GET USER (Select in Database)
     public JSONObject getUser(String[] path) throws SQLException {
         int idUser = 0;
         JSONObject jsonUser = null;
@@ -116,4 +118,23 @@ public class UserRequestHandler{
         }
         return jsonUser;
     }
+
+    // POST USER (INSERT in Database)
+    public String postUsers(JSONObject jsonReqBody) throws SQLException {
+        Users user = new Users();
+        System.out.println("Getting data from request");
+        user.setId(jsonReqBody.optInt("id"));
+        user.setFirst_name(jsonReqBody.optString("first_name"));
+        user.setLast_name(jsonReqBody.optString("last_name"));
+        user.setEmail(jsonReqBody.optString("email"));
+        user.setPhone_number(jsonReqBody.optString("phone_number"));
+        user.setType(jsonReqBody.optString("type"));
+
+        return userDAO.addNewUser(user);
+    }
+
+    // DELETE USER (DELETE in Database)
+//    public String deleteUsers(String[] path) {
+//
+//    }
 }

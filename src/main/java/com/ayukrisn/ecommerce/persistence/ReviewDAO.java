@@ -35,9 +35,8 @@ public class ReviewDAO {
                 listReviews.add(review);
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (result != null) result.close();
@@ -45,5 +44,39 @@ public class ReviewDAO {
             if (connection != null) connection.close();
         }
         return listReviews;
+    }
+
+    // INSERT NEW ORDER TO DATABASE
+    public String addNewReview(Reviews review) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+        System.out.println("Connected to database");
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("INSERT INTO reviews VALUES (?,?,?);");
+            System.out.println("Inserting data to table reviews into database");
+            statement.setInt(1, review.getOrder());
+            statement.setInt(2, review.getStar());
+            statement.setString(3, review.getDescription());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the reviews table has been added";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
     }
 }

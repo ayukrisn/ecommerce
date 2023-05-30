@@ -35,9 +35,8 @@ public class OrderDAO {
                 listOrders.add(order);
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (result != null) result.close();
@@ -71,9 +70,8 @@ public class OrderDAO {
                 listOrderDetails.add(orderDetail);
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (result != null) result.close();
@@ -81,5 +79,78 @@ public class OrderDAO {
             if (connection != null) connection.close();
         }
         return listOrderDetails;
+    }
+
+    // INSERT NEW ORDER TO DATABASE
+    public String addNewOrder(Orders orders) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+        System.out.println("Connected to database");
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("INSERT INTO orders VALUES (?,?,?,?,?,?);");
+            System.out.println("Inserting data to table orders into database");
+            statement.setInt(1, orders.getId());
+            statement.setInt(2, orders.getBuyer());
+            statement.setString(3, orders.getNote());
+            statement.setInt(4, orders.getTotal());
+            statement.setInt(5, orders.getDiscount());
+            statement.setInt(6, orders.getIs_paid());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the orders table has been added";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
+    // INSERT NEW ORDER DETAIL TO DATABASE
+    public String addNewOrderDetail(OrderDetails orderDetails) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response = "";
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish connection to SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
+            statement = connection.prepareStatement("INSERT INTO order_details VALUES (" +
+                    orderDetails.getOrder()  + "," +
+                    orderDetails.getProduct() + "," +
+                    orderDetails.getQuantity() + "," +
+                    orderDetails.getPrice() + ");");
+            System.out.println("Inserting data to table order_details into database");
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the order_details table has been added";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
     }
 }

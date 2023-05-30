@@ -1,5 +1,6 @@
 package com.ayukrisn.ecommerce.persistence;
 import com.ayukrisn.ecommerce.model.Products;
+import com.ayukrisn.ecommerce.model.Users;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,9 +31,8 @@ public class ProductDAO {
                 product.setStock(result.getInt("stock"));
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (result != null) result.close();
@@ -74,6 +74,7 @@ public class ProductDAO {
                 listProducts.add(product);
             }
         } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
             if (result != null) result.close();
@@ -82,4 +83,72 @@ public class ProductDAO {
         }
         return listProducts;
     }
+
+    // POST PRODUCTS TO DATABASE
+    public String addNewProduct(Products product) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish hubungan ke SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("INSERT INTO products VALUES (?,?,?,?,?,?);");
+            statement.setInt(1, product.getId());
+            statement.setInt(2, product.getSeller());
+            statement.setString(3, product.getTitle());
+            statement.setString(4, product.getDescription());
+            statement.setInt(5, product.getPrice());
+            statement.setInt(6, product.getStock());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) in the products table has been added";
+                System.out.println(response);
+            } else {
+                response = "No rows have been added";
+                System.out.println(response);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
+    // DELETE PRODUCT BASED ON ID
+    public String deleteProduct(int idProduct) throws SQLException, ClassNotFoundException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        String response;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish hubungan ke SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("DELETE FROM products WHERE id = " + idProduct);
+            result = statement.executeQuery();
+            response = "1 row(s) in products table has been deleted. Row: " + idProduct;
+            System.out.println(response);
+
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (result != null) result.close();
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+
+        return response;
+    }
+
 }
