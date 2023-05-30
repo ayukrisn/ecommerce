@@ -17,6 +17,7 @@ public class OrderDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("SELECT * FROM orders WHERE " + idType +" = ?");
             statement.setInt(1, id);
             result = statement.executeQuery();
@@ -54,6 +55,7 @@ public class OrderDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("SELECT * FROM order_details WHERE orders = ?");
             statement.setInt(1, id);
             result = statement.executeQuery();
@@ -83,12 +85,12 @@ public class OrderDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         String response;
-        System.out.println("Connected to database");
 
         try {
             Class.forName("org.sqlite.JDBC");
             // Establish connection to SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("INSERT INTO orders VALUES (?,?,?,?,?,?);");
             System.out.println("Inserting data to table orders into database");
             statement.setInt(1, orders.getId());
@@ -131,14 +133,13 @@ public class OrderDAO {
                     orderDetails.getProduct() + "," +
                     orderDetails.getQuantity() + "," +
                     orderDetails.getPrice() + ");");
-            System.out.println("Inserting data to table order_details into database");
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                response = rowsAffected + " row(s) in the order_details table has been affected";
+                response = rowsAffected + " row(s) has been affected";
                 System.out.println(response);
             } else {
-                response = "No rows have been added";
+                response = "No rows have been affected";
                 System.out.println(response);
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -156,12 +157,12 @@ public class OrderDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         String response;
-        System.out.println("Connected to database");
 
         try {
             Class.forName("org.sqlite.JDBC");
             // Establish connection to SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("UPDATE orders SET buyer = ?, note = ?, total = ?, " +
                     "discount = ?, is_paid = ? WHERE id =" + idOrder);
             statement.setInt(1, orders.getBuyer());
@@ -198,6 +199,7 @@ public class OrderDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("DELETE FROM orders WHERE id = " + idOrder);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -263,6 +265,7 @@ public class OrderDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("DELETE FROM order_details WHERE orders = " + idOrder);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {

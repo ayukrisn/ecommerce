@@ -54,6 +54,7 @@ public class AddressDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("INSERT INTO addresses VALUES (?,?,?,?,?,?,?)");
             statement.setInt(1, address.getUser());
             statement.setString(2, address.getType().toString());
@@ -64,10 +65,10 @@ public class AddressDAO {
             statement.setString(7, address.getPostcode());
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                response = rowsAffected + " row(s) in the address table has been added";
+                response = rowsAffected + " row(s) has been affected";
                 System.out.println(response);
             } else {
-                response = "No rows have been added";
+                response = "No rows have been affected";
                 System.out.println(response);
             }
 
@@ -88,12 +89,12 @@ public class AddressDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         String response;
-        System.out.println("Connected to database");
 
         try {
             Class.forName("org.sqlite.JDBC");
             // Establish connection to SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("UPDATE addresses SET type = ?, line1 = ?, line2 = ?, " +
                     "city = ?, province = ?, postcode = ? WHERE user =" + idUser);
             statement.setString(1, address.getType().toString());
@@ -105,10 +106,10 @@ public class AddressDAO {
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                response = rowsAffected + " row(s) in the addresses table has been updated";
+                response = rowsAffected + " row(s) has been affected";
                 System.out.println(response);
             } else {
-                response = "No rows have been added";
+                response = "No rows have been affected";
                 System.out.println(response);
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -131,6 +132,7 @@ public class AddressDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("DELETE FROM addresses WHERE user = " + idUser);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {

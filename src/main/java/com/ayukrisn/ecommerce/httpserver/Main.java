@@ -14,7 +14,7 @@ public class Main {
             httpServer.createContext("/",new ServerHandler());
             httpServer.setExecutor(Executors.newSingleThreadExecutor());
             httpServer.start();
-            System.out.println("Listening on port 8072");
+            System.out.println("Listening to Port 8072");
         } catch (Exception exception){
             exception.printStackTrace();
         }

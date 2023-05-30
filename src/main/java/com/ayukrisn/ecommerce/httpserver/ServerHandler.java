@@ -32,7 +32,7 @@ public class ServerHandler implements HttpHandler {
                     if (jsonUser != null)
                     responseHandler.getResponse(exchange, jsonUser.toString(), path, "users", 200);
                     else {
-                        responseHandler.sendResponse(exchange, 404, "ID Not Found");
+                        responseHandler.sendResponse(exchange, 404, "Not Found");
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -44,7 +44,7 @@ public class ServerHandler implements HttpHandler {
                      if (jsonProduct != null)
                          responseHandler.getResponse(exchange, jsonProduct.toString(), path, "products", 200);
                      else {
-                         responseHandler.sendResponse(exchange, 404, "ID Not Found");
+                         responseHandler.sendResponse(exchange, 404, "Not Found");
                      }
                  } catch (SQLException e) {
                      throw new RuntimeException(e);
@@ -57,7 +57,7 @@ public class ServerHandler implements HttpHandler {
                          responseHandler.getResponse(exchange, jsonOrders.toString(), path, "orders", 200);
                      }
                      else {
-                         responseHandler.sendResponse(exchange, 404, "ID Not Found");
+                         responseHandler.sendResponse(exchange, 404, "Not Found");
                      }
                  } catch (SQLException e) {
                      throw new RuntimeException(e);

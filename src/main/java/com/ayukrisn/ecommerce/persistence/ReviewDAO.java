@@ -52,23 +52,22 @@ public class ReviewDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         String response;
-        System.out.println("Connected to database");
 
         try {
             Class.forName("org.sqlite.JDBC");
             // Establish connection to SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
             statement = connection.prepareStatement("INSERT INTO reviews VALUES (?,?,?);");
-            System.out.println("Inserting data to table reviews into database");
+            System.out.println("Connected to database");
             statement.setInt(1, review.getOrder());
             statement.setInt(2, review.getStar());
             statement.setString(3, review.getDescription());
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                response = rowsAffected + " row(s) in the reviews table has been added";
+                response = rowsAffected + " row(s) has been affected";
                 System.out.println(response);
             } else {
-                response = "No rows have been added";
+                response = "No rows have been affected";
                 System.out.println(response);
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -86,12 +85,12 @@ public class ReviewDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         String response;
-        System.out.println("Connected to database");
 
         try {
             Class.forName("org.sqlite.JDBC");
             // Establish connection to SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("UPDATE reviews SET star = ?, description = ? " +
                     "WHERE orders =" + idOrder);
             statement.setInt(1, review.getStar());
@@ -125,6 +124,7 @@ public class ReviewDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("DELETE FROM reviews WHERE orders = " + idOrder);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {

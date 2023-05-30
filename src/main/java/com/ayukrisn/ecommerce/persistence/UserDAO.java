@@ -17,6 +17,7 @@ public class UserDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
             statement.setInt(1, id);
             result = statement.executeQuery();
@@ -97,7 +98,7 @@ public class UserDAO {
             statement.setString(6, user.getType().toString());
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                response = rowsAffected + " row(s) in the users table has been added";
+                response = rowsAffected + " row(s) has been affected";
                 System.out.println(response);
             } else {
                 response = "No rows have been added";
@@ -133,7 +134,7 @@ public class UserDAO {
             statement.setString(5, user.getType().toString());
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                response = rowsAffected + " row(s) in the users table has been updated";
+                response = rowsAffected + " row(s) has been updated";
                 System.out.println(response);
             } else {
                 response = "No rows have been added";
@@ -159,6 +160,7 @@ public class UserDAO {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            System.out.println("Connected to database");
             statement = connection.prepareStatement("DELETE FROM users WHERE id = " + idUser);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
