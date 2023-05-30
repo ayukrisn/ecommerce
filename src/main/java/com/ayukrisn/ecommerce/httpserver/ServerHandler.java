@@ -114,7 +114,7 @@ public class ServerHandler implements HttpHandler {
                     throw new RuntimeException(e);
                 }
             } else {
-                response = "404 NOT FOUND";
+                response = "404 ENTITY NOT FOUND";
                 responseHandler.sendResponse(exchange, 400, response);
             }
         } else if ("PUT".equals(exchange.getRequestMethod())) {
@@ -167,7 +167,7 @@ public class ServerHandler implements HttpHandler {
                     throw new RuntimeException(e);
                 }
             } else {
-                response = "404 NOT FOUND";
+                response = "404 ENTITY NOT FOUND";
                 responseHandler.sendResponse(exchange, 400, response);
             }
         } else if ("DELETE".equals(exchange.getRequestMethod())) {
@@ -216,7 +216,7 @@ public class ServerHandler implements HttpHandler {
                     throw new RuntimeException(e);
                 }
             } else {
-                response = "404 NOT FOUND";
+                response = "404 ENTITY NOT FOUND";
                 responseHandler.sendResponse(exchange, 400, response);
             }
         } else { //untuk request method yang tidak disupport
