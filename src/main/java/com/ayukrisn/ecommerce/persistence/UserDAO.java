@@ -153,7 +153,6 @@ public class UserDAO {
     public String deleteUser(int idUser) throws SQLException, ClassNotFoundException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet result = null;
         String response;
 
         try {
@@ -161,16 +160,19 @@ public class UserDAO {
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
             statement = connection.prepareStatement("DELETE FROM users WHERE id = " + idUser);
-            result = statement.executeQuery();
-            response = "1 row(s) in users table has been deleted. Row: " + idUser;
-            System.out.println(response);
-
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) have been affected";
+                System.out.println(response);
+            } else {
+                response = "No rows have been affected";
+                System.out.println(response);
+            }
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         }
         finally {
-            if (result != null) result.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         }

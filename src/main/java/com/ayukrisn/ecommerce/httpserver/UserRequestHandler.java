@@ -144,8 +144,9 @@ public class UserRequestHandler{
 
         return user;
     }
-    // DELETE USER (DELETE in Database)
-//    public String deleteUsers(String[] path) {
-//
-//    }
+    // DELETE USER
+    public String deleteUser(String[] path) throws SQLException, ClassNotFoundException {
+        int idUser = Integer.valueOf(path[2]);
+        return userDAO.deleteUser(idUser);
+    }
 }

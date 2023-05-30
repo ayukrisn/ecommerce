@@ -77,6 +77,12 @@ public class ProductRequestHandler {
         return productDAO.updateProduct(product, idProduct);
     }
 
+    // DELETE PRODUCTS
+    public String deleteProduct(String[] path) throws SQLException, ClassNotFoundException {
+        int idProduct = Integer.valueOf(path[2]);
+        return productDAO.deleteProduct(idProduct);
+    }
+
     private Products productsParseJSONData(JSONObject jsonReqBody) throws SQLException {
         Products product = new Products();
         product.setId(jsonReqBody.optInt("id"));

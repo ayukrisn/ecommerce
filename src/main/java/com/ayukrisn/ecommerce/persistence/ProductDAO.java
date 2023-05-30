@@ -163,7 +163,6 @@ public class ProductDAO {
     public String deleteProduct(int idProduct) throws SQLException, ClassNotFoundException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet result = null;
         String response;
 
         try {
@@ -171,10 +170,14 @@ public class ProductDAO {
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
             statement = connection.prepareStatement("DELETE FROM products WHERE id = " + idProduct);
-            result = statement.executeQuery();
-            response = "1 row(s) in products table has been deleted. Row: " + idProduct;
-            System.out.println(response);
-
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) have been affected";
+                System.out.println(response);
+            } else {
+                response = "No rows have been affected";
+                System.out.println(response);
+            }
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
@@ -182,7 +185,6 @@ public class ProductDAO {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
-            if (result != null) result.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         }

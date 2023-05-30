@@ -59,6 +59,12 @@ public class OrderRequestHandler {
         return orderDAO.updateOrders(orders, idOrder);
     }
 
+    // DELETE ORDER
+    public String deleteOrders(String[] path) throws SQLException, ClassNotFoundException {
+        int idOrder = Integer.valueOf(path[2]);
+        return orderDAO.deleteOrder(idOrder);
+    }
+
     private Orders ordersParseJSONData(JSONObject jsonReqBody) throws SQLException {
         Orders orders = new Orders();
         System.out.println("Getting data from request");

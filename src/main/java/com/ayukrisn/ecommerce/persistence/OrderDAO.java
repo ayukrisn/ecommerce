@@ -188,6 +188,36 @@ public class OrderDAO {
         return response;
     }
 
+    // DELETE ORDER
+    public String deleteOrder(int idOrder) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        String response;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            // Establish hubungan ke SQLite database
+            connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
+            statement = connection.prepareStatement("DELETE FROM orders WHERE id = " + idOrder);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) have been affected";
+                System.out.println(response);
+            } else {
+                response = "No rows have been affected";
+                System.out.println(response);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return response;
+    }
+
+
     // UPDATE ORDER DETAILS BASED ON ID
     public String updateOrderDetails(OrderDetails orderDetails, int idOrder) throws SQLException {
         Connection connection = null;

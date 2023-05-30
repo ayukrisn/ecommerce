@@ -173,7 +173,12 @@ public class ServerHandler implements HttpHandler {
         } else if ("DELETE".equals(exchange.getRequestMethod())) {
             // DELETE
             if ("users".equals(path[1])) {
-
+                try {
+                    response = userReqHandler.deleteUser(path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             } else if ("addresses".equals(path[1])) {
                 try {
                     response = addressRequestHandler.deleteAddress(path);
@@ -182,8 +187,19 @@ public class ServerHandler implements HttpHandler {
                     throw new RuntimeException(e);
                 }
             } else if ("products".equals(path[1])) {
-
+                try {
+                    response = productReqHandler.deleteProduct(path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             } else if ("orders".equals(path[1])) {
+                try {
+                    response = orderReqHandler.deleteOrders(path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
 
             } else if ("order_details".equals(path[1])) {
                 try {
