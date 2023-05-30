@@ -175,15 +175,30 @@ public class ServerHandler implements HttpHandler {
             if ("users".equals(path[1])) {
 
             } else if ("addresses".equals(path[1])) {
-
+                try {
+                    response = addressRequestHandler.deleteAddress(path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             } else if ("products".equals(path[1])) {
 
             } else if ("orders".equals(path[1])) {
 
-            } else if ("orderDetails".equals(path[1])) {
-
-            } else if ("review".equals(path[1])) {
-
+            } else if ("order_details".equals(path[1])) {
+                try {
+                    response = orderReqHandler.deleteOrderDetails(path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if ("reviews".equals(path[1])) {
+                try {
+                    response = reviewReqHandler.deleteReview(path);
+                    responseHandler.sendResponse(exchange, 200, response);
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 response = "404 NOT FOUND";
                 responseHandler.sendResponse(exchange, 400, response);

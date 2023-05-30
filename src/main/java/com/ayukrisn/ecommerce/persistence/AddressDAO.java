@@ -121,27 +121,29 @@ public class AddressDAO {
         return response;
     }
 
-    // DELETE ADDRESS BASED ON ID
+    // DELETE ADDRESS
     public String deleteAddress(int idUser) throws SQLException, ClassNotFoundException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet result = null;
         String response;
 
         try {
             Class.forName("org.sqlite.JDBC");
             // Establish hubungan ke SQLite database
             connection = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
-            statement = connection.prepareStatement("DELETE FROM address WHERE user = " + idUser);
-            result = statement.executeQuery();
-            response = "1 row(s) in addresses table has been deleted. User ID: " + idUser;
-            System.out.println(response);
-
+            statement = connection.prepareStatement("DELETE FROM addresses WHERE user = " + idUser);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                response = rowsAffected + " row(s) have been affected";
+                System.out.println(response);
+            } else {
+                response = "No rows have been affected";
+                System.out.println(response);
+            }
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
-            if (result != null) result.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         }

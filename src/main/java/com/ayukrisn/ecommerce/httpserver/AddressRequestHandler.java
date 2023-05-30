@@ -23,6 +23,12 @@ public class AddressRequestHandler {
         return addressDAO.updateAddress(address, idUser);
     }
 
+    // DELETE ADDRESS
+    public String deleteAddress(String[] path) throws SQLException, ClassNotFoundException {
+        int idUser = Integer.valueOf(path[2]);
+        return addressDAO.deleteAddress(idUser);
+    }
+
     private Addresses addressParseJSONData(JSONObject jsonReqBody) throws SQLException {
         Addresses address = new Addresses();
         address.setUser(jsonReqBody.optInt("user"));

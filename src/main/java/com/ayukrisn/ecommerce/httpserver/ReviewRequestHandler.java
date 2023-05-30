@@ -24,6 +24,12 @@ public class ReviewRequestHandler {
         return reviewDAO.updateReview(review, idOrder);
     }
 
+    // DELETE REVIEW
+    public String deleteReview(String[] path) throws SQLException, ClassNotFoundException {
+        int idOrder = Integer.valueOf(path[2]);
+        return reviewDAO.deleteReview(idOrder);
+    }
+
     private Reviews reviewParseJSONData(JSONObject jsonReqBody) throws SQLException {
         Reviews review = new Reviews();
         System.out.println("Getting data from request");
